@@ -28,10 +28,10 @@ const interactiveTools = [
 ];
 
 const legendItems = [
-  { arabic: "مرفوع", english: "Nominative", color: "bg-blue-100 text-blue-900 border-blue-400", dot: "bg-blue-600" },
-  { arabic: "منصوب", english: "Accusative", color: "bg-red-100 text-red-900 border-red-400", dot: "bg-red-600" },
-  { arabic: "مجرور", english: "Genitive", color: "bg-emerald-100 text-emerald-900 border-emerald-400", dot: "bg-emerald-600" },
-  { arabic: "مبني", english: "Invariable", color: "bg-slate-100 text-slate-800 border-slate-400", dot: "bg-slate-600" },
+  { variant: "marfu" as const, arabic: "مرفوع", english: "Nominative" },
+  { variant: "mansub" as const, arabic: "منصوب", english: "Accusative" },
+  { variant: "majrur" as const, arabic: "مجرور", english: "Genitive" },
+  { variant: "mabni" as const, arabic: "مبني", english: "Invariable" },
 ];
 
 export default function HomePage() {
@@ -61,10 +61,10 @@ export default function HomePage() {
           <div className="text-center text-[10px] tracking-[2.5px] font-semibold text-[#1a2744]/60 mb-3">COLOR-CODED GRAMMATICAL CASES</div>
           <div className="flex flex-wrap justify-center gap-3">
             {legendItems.map((item, i) => (
-              <div key={i} className={`legend-pill border-2 ${item.color}`}>
-                <span className={`w-3.5 h-3.5 rounded-full ${item.dot}`} />
+              <div key={i} className={`legend-pill legend-pill--${item.variant}`}>
+                <span className={`case-dot case-dot--${item.variant}`} />
                 <span className="arabic-text font-semibold text-[15px]" dir="rtl">{item.arabic}</span>
-                <span className="text-[#1a2744]/35">·</span>
+                <span className="opacity-40">·</span>
                 <span className="text-sm font-medium">{item.english}</span>
               </div>
             ))}

@@ -13,13 +13,16 @@ export default function GamePage() {
   const [applied, setApplied] = useState(false);
   const [showResult, setShowResult] = useState(false);
   const [correctCount, setCorrectCount] = useState(0);
+  const [chosenParticle, setChosenParticle] = useState<string | null>(null);
 
   const sentence = gameSentences[currentIndex];
 
-  const handleApply = (particleArabic: string) => {
+  const handleApply = (index: number) => {
+    const particle = gameParticles[index];
+    setChosenParticle(particle.arabic);
     setApplied(true);
     setShowResult(true);
-    if (particleArabic === sentence.particle) {
+    if (particle.arabic === sentence.particle) {
       setCorrectCount((c) => c + 1);
     }
   };
@@ -77,10 +80,10 @@ export default function GamePage() {
       <div className="mb-6">
         <p className="text-xs tracking-widest font-semibold text-[#c9a96e] mb-2 px-1">GOVERNING PARTICLES</p>
         <div className="flex flex-wrap gap-2">
-          {gameParticles.map((p) => (
+          {gameParticles.map((p, idx) => (
             <button
               key={p.latin}
-              onClick={() => handleApply(p.arabic)}
+              onClick={() => handleApply(idx)}
               disabled={applied}
               className={`px-4 py-2.5 rounded-xl border text-lg arabic-text transition-all disabled:opacity-40 ${
                 applied && p.arabic === sentence.particle

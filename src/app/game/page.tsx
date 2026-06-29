@@ -7,8 +7,28 @@ import Link from "next/link";
 import Layout from "@/components/Layout";
 import { CaseLegend, CaseLabel } from "@/components/CaseBadge";
 import { gameSentences, gameParticles } from "@/data/parsing-game";
+import type { GameSentence } from "@/data/parsing-game";
 
 type FeedbackType = "correct" | "wrong" | null;
+
+/** Extract short case name from a string like "مرفوع (مبتدأ)" -> "مرفوع" */
+function shortCase(label: string): string {
+  const m = label.match(/^(مرفوع|منصوب|مجرور|مبني)/);
+  return m ? m[1] : label;
+}
+
+/** Build a user-facing goal like "Change the ending from ـٌ (nominative) to ـًا (accusative)" */
+function goalText(s: GameSentence): string {
+  const fromEnding = s.baseEnding;
+  const toEnding = s.resultEnding;
+  const fromCase = shortCase(s.baseCase);
+  const toCase = shortCase(s.resultCase);
+  // If endings are the same, just mention case
+  if (fromEnding === toEnding) {
+    return `Change the grammatical case from ${fromCase} to ${toCase}`;
+  }
+  return `Change the ending from ${fromEnding} (${fromCase}) to ${toEnding} (${toCase})`;
+}
 
 export default function GamePage() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -90,6 +110,14 @@ export default function GamePage() {
         />
       </div>
 
+      {/* Goal instruction */}
+      <div className="text-center mb-5">
+        <div className="text-xs uppercase tracking-widest font-semibold text-[#c9a96e] mb-2">GOAL</div>
+        <p className="text-sm font-medium text-[#1a2744] bg-[#f5ecd9]/60 rounded-xl px-5 py-3 inline-block border border-[#c9a96e]/20">
+          {goalText(sentence)}
+        </p>
+      </div>
+
       {/* Particles */}
       <div className="mb-6">
         <p className="text-xs tracking-widest font-semibold text-[#c9a96e] mb-2 px-1">GOVERNING PARTICLES</p>
@@ -163,7 +191,7 @@ export default function GamePage() {
                 <div>
                   <div className="font-semibold mb-0.5">Not quite</div>
                   <p className="text-sm opacity-90">
-                    The particle <span className="arabic-text font-semibold" dir="rtl">{gameParticles[chosenIndex!].arabic}</span> doesn't govern this sentence. Try another particle.
+                    <span className="arabic-text font-semibold" dir="rtl">{gameParticles[chosenIndex!].arabic}</span> doesn't change the ending the way we need. The goal is: <strong>{goalText(sentence)}</strong>. Try another particle.
                   </p>
                 </div>
               </div>

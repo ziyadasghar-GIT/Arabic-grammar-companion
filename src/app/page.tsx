@@ -7,6 +7,7 @@ import {
   BookOpen, GamepadIcon, MousePointerClick, ArrowRight,
 } from "lucide-react";
 import Layout from "@/components/Layout";
+import { CaseLegend } from "@/components/CaseBadge";
 
 const iconMap: Record<string, any> = {
   Type, AlignLeft, Wand2, Atom, Repeat, Copy,
@@ -25,13 +26,6 @@ const modules = [
 const interactiveTools = [
   { title: "Parsing Game", arabic: "لعبة الإعراب", description: "Tap a governing particle and watch the word endings change with smooth animations", icon: "GamepadIcon", href: "/game" },
   { title: "Hover Practice", arabic: "التمرين التفاعلي", description: "Hover over words in real sentences to reveal root, classification, and grammatical state", icon: "MousePointerClick", href: "/hover-practice" },
-];
-
-const legendItems = [
-  { variant: "marfu" as const, arabic: "مرفوع", english: "Nominative" },
-  { variant: "mansub" as const, arabic: "منصوب", english: "Accusative" },
-  { variant: "majrur" as const, arabic: "مجرور", english: "Genitive" },
-  { variant: "mabni" as const, arabic: "مبني", english: "Invariable" },
 ];
 
 export default function HomePage() {
@@ -56,20 +50,7 @@ export default function HomePage() {
           </p>
         </div>
 
-        {/* Legend - prominent */}
-        <div className="bg-white/80 border border-[#c9a96e]/25 rounded-2xl p-5">
-          <div className="text-center text-[10px] tracking-[2.5px] font-semibold text-[#1a2744]/60 mb-3">COLOR-CODED GRAMMATICAL CASES</div>
-          <div className="flex flex-wrap justify-center gap-3">
-            {legendItems.map((item, i) => (
-              <div key={i} className={`legend-pill legend-pill--${item.variant}`}>
-                <span className={`case-dot case-dot--${item.variant}`} />
-                <span className="arabic-text font-semibold text-[15px]" dir="rtl">{item.arabic}</span>
-                <span className="opacity-40">·</span>
-                <span className="text-sm font-medium">{item.english}</span>
-              </div>
-            ))}
-          </div>
-        </div>
+        <CaseLegend />
 
         {/* Interactive Exercises */}
         <div>

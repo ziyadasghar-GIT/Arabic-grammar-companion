@@ -5,6 +5,7 @@ import { useState } from "react";
 import { ChevronDown, BookOpen, Sparkles } from "lucide-react";
 import type { Module, SubTopic } from "@/data/curriculum";
 import ExampleCard from "./ExampleCard";
+import { CaseLegend } from "./CaseBadge";
 
 export default function ModuleContent({ module }: { module: Module }) {
   const [openTopic, setOpenTopic] = useState<string | null>(module.subtopics[0]?.id || null);
@@ -20,6 +21,8 @@ export default function ModuleContent({ module }: { module: Module }) {
         <p className="arabic-text text-2xl text-[#c9a96e] mt-0.5" dir="rtl">{module.titleArabic}</p>
         <p className="mt-3 text-sm text-[#3f3f3f] max-w-3xl">{module.description}</p>
       </div>
+
+      <CaseLegend size="compact" />
 
       <div className="space-y-4">
         {module.subtopics.map((topic, idx) => (

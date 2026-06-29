@@ -5,7 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { GamepadIcon, RotateCcw, ArrowLeft, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 import Layout from "@/components/Layout";
-import { gameSentences, gameParticles, type GameSentence } from "@/data/parsing-game";
+import { CaseLegend, CaseLabel } from "@/components/CaseBadge";
+import { gameSentences, gameParticles } from "@/data/parsing-game";
 
 export default function GamePage() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -16,13 +17,10 @@ export default function GamePage() {
   const sentence = gameSentences[currentIndex];
 
   const handleApply = (particleArabic: string) => {
+    setApplied(true);
+    setShowResult(true);
     if (particleArabic === sentence.particle) {
-      setApplied(true);
-      setShowResult(true);
       setCorrectCount((c) => c + 1);
-    } else {
-      setApplied(true);
-      setShowResult(true);
     }
   };
 
@@ -60,15 +58,22 @@ export default function GamePage() {
             <p className="arabic-text text-[#c9a96e] text-xl" dir="rtl">لعبة الإعراب</p>
           </div>
         </div>
-        <p className="text-sm text-[#4a4a4a]">Tap a governing particle to apply it and watch the ending change. Progress: {correctCount} / {gameSentences.length}</p>
+        <p className="text-sm text-[#4a4a4a]">
+          Tap a governing particle to apply it and watch the ending change. Progress: {correctCount} / {gameSentences.length}
+        </p>
       </div>
 
-      {/* Progress */}
+      <div className="mb-6">
+        <CaseLegend size="compact" />
+      </div>
+
       <div className="bg-[#c9a96e]/15 rounded-full h-1.5 mb-6 overflow-hidden">
-        <motion.div className="bg-[#c9a96e] h-1.5 rounded-full" animate={{ width: `${((currentIndex + 1) / gameSentences.length) * 100}%` }} />
+        <motion.div
+          className="bg-[#c9a96e] h-1.5 rounded-full"
+          animate={{ width: `${((currentIndex + 1) / gameSentences.length) * 100}%` }}
+        />
       </div>
 
-      {/* Particles */}
       <div className="mb-6">
         <p className="text-xs tracking-widest font-semibold text-[#c9a96e] mb-2 px-1">GOVERNING PARTICLES</p>
         <div className="flex flex-wrap gap-2">
@@ -79,7 +84,7 @@ export default function GamePage() {
               disabled={applied}
               className={`px-4 py-2.5 rounded-xl border text-lg arabic-text transition-all disabled:opacity-40 ${
                 applied && p.arabic === sentence.particle
-                  ? "bg-green-100 border-green-400 text-green-900"
+                  ? "bg-[#d1fae5] border-[#34d399] text-[#065f46]"
                   : applied
                   ? "bg-white border-gray-200 text-gray-400"
                   : "bg-white border-[#c9a96e]/40 hover:border-[#c9a96e] text-[#1a2744]"
@@ -92,7 +97,6 @@ export default function GamePage() {
         </div>
       </div>
 
-      {/* Sentence area */}
       <div className="card rounded-2xl p-8 mb-5 min-h-[180px] flex items-center justify-center">
         <AnimatePresence mode="wait">
           {!applied ? (
@@ -101,8 +105,9 @@ export default function GamePage() {
               <p className="arabic-text text-4xl lg:text-5xl leading-loose text-[#1a2744]" dir="rtl">
                 {sentence.baseSentence}
               </p>
-              <div className="mt-4 inline-block text-sm bg-blue-100 text-blue-800 px-3 py-0.5 rounded-full">
-                {sentence.baseCase} · ending {sentence.baseEnding}
+              <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+                <CaseLabel text={sentence.baseCase} />
+                <span className="text-sm text-[#1a2744]/60">ending {sentence.baseEnding}</span>
               </div>
             </div>
           ) : (
@@ -111,8 +116,9 @@ export default function GamePage() {
               <p className="arabic-text text-4xl lg:text-5xl leading-loose text-[#1a2744]" dir="rtl">
                 {sentence.resultSentence}
               </p>
-              <div className="mt-4 inline-block text-sm bg-red-100 text-red-800 px-3 py-0.5 rounded-full">
-                {sentence.resultCase} · ending {sentence.resultEnding}
+              <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+                <CaseLabel text={sentence.resultCase} />
+                <span className="text-sm text-[#1a2744]/60">ending {sentence.resultEnding}</span>
               </div>
             </div>
           )}

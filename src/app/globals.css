@@ -175,6 +175,43 @@ a:hover { color: var(--manuscript-gold); }
 .case-dot--majrur { background-color: var(--case-majrur-dot); }
 .case-dot--mabni { background-color: var(--case-mabni-dot); }
 
+.legend-pill--sm {
+  padding: 8px 12px;
+  font-size: 12px;
+}
+
+.case-text--marfu { color: var(--case-marfu-dot); }
+.case-text--mansub { color: var(--case-mansub-dot); }
+.case-text--majrur { color: var(--case-majrur-dot); }
+.case-text--mabni { color: var(--case-mabni-dot); }
+
+.word-case {
+  cursor: help;
+  font-weight: 600;
+  transition: color 0.15s ease, text-decoration-color 0.15s ease;
+}
+
+.word-case--marfu { color: var(--case-marfu-dot); }
+.word-case--mansub { color: var(--case-mansub-dot); }
+.word-case--majrur { color: var(--case-majrur-dot); }
+.word-case--mabni { color: var(--case-mabni-dot); }
+
+.word-case:hover {
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 5px;
+}
+
+.word-case--marfu:hover { text-decoration-color: var(--case-marfu-border); }
+.word-case--mansub:hover { text-decoration-color: var(--case-mansub-border); }
+.word-case--majrur:hover { text-decoration-color: var(--case-majrur-border); }
+.word-case--mabni:hover { text-decoration-color: var(--case-mabni-border); }
+
+.example-card--marfu { border-left: 4px solid var(--case-marfu-border); }
+.example-card--mansub { border-left: 4px solid var(--case-mansub-border); }
+.example-card--majrur { border-left: 4px solid var(--case-majrur-border); }
+.example-card--mabni { border-left: 4px solid var(--case-mabni-border); }
+
 .module-card {
   background: white;
   border: 1px solid rgba(201, 169, 110, 0.28);

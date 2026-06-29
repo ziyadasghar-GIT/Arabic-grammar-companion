@@ -5,15 +5,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { MousePointerClick, ArrowLeft, Info } from "lucide-react";
 import Link from "next/link";
 import Layout from "@/components/Layout";
+import { CaseLegend, CaseBadge } from "@/components/CaseBadge";
 import { tooltipSentences, type TooltipWord } from "@/data/parsing-game";
-import type { Case } from "@/data/curriculum";
-
-const caseClassMap: Record<Case, string> = {
-  "مرفوع": "text-blue-700",
-  "منصوب": "text-red-700",
-  "مجرور": "text-green-700",
-  "مبني": "text-gray-600",
-};
+import { wordCaseClass } from "@/lib/caseStyles";
 
 export default function HoverPracticePage() {
   const [hoveredWord, setHoveredWord] = useState<TooltipWord | null>(null);
@@ -46,18 +40,12 @@ export default function HoverPracticePage() {
         </p>
       </div>
 
-      {/* Legend */}
-      <div className="flex flex-wrap gap-2 mb-6">
-        {Object.entries(caseClassMap).map(([c, cls]) => (
-          <span key={c} className={`arabic-text px-3 py-1 text-sm rounded-full border bg-white ${cls}`} dir="rtl">
-            {c}
-          </span>
-        ))}
+      <div className="mb-6">
+        <CaseLegend size="compact" />
       </div>
 
-      {/* Sentences */}
       <div className="space-y-5">
-        {tooltipSentences.map((sent, si) => (
+        {tooltipSentences.map((sent) => (
           <div key={sent.id} className="card rounded-2xl p-8">
             <div className="text-center">
               <p className="arabic-text text-3xl lg:text-4xl leading-[1.9] tracking-wide" dir="rtl">
@@ -66,7 +54,7 @@ export default function HoverPracticePage() {
                     <span
                       onMouseEnter={(e) => handleMouseEnter(word, e)}
                       onMouseLeave={() => setHoveredWord(null)}
-                      className={`cursor-help transition-all hover:underline decoration-dotted ${caseClassMap[word.case]}`}
+                      className={wordCaseClass(word.case)}
                     >
                       {word.arabic}
                     </span>
@@ -79,7 +67,6 @@ export default function HoverPracticePage() {
         ))}
       </div>
 
-      {/* Tooltip */}
       <AnimatePresence>
         {hoveredWord && (
           <motion.div
@@ -93,12 +80,27 @@ export default function HoverPracticePage() {
               transform: "translateX(-50%)",
             }}
           >
-            <div className="bg-white border border-[#c9a96e]/30 shadow-xl rounded-2xl p-4 min-w-[240px]">
-              <div className="arabic-text text-2xl font-semibold mb-2 text-[#1a2744]" dir="rtl">{hoveredWord.arabic}</div>
-              <div className="space-y-1 text-sm">
-                <div><span className="text-gray-500">Root:</span> <span className="arabic-text font-medium">{hoveredWord.root}</span></div>
-                <div><span className="text-gray-500">Classification:</span> <span className="arabic-text">{hoveredWord.classification}</span></div>
-                <div><span className="text-gray-500">Grammatical state:</span> <span className="arabic-text font-semibold">{hoveredWord.grammaticalState}</span></div>
+            <div className="bg-white border border-[#c9a96e]/30 shadow-xl rounded-2xl p-4 min-w-[260px] tooltip-content">
+              <div className="arabic-text text-2xl font-semibold mb-2 text-[#1a2744]" dir="rtl">
+                {hoveredWord.arabic}
+              </div>
+              <div className="space-y-2 text-sm">
+                <div>
+                  <span className="text-gray-500">Root:</span>{" "}
+                  <span className="arabic-text font-medium">{hoveredWord.root}</span>
+                </div>
+                <div>
+                  <span className="text-gray-500">Classification:</span>{" "}
+                  <span className="arabic-text">{hoveredWord.classification}</span>
+                </div>
+                <div>
+                  <span className="text-gray-500 block mb-1">Grammatical case:</span>
+                  <CaseBadge caseType={hoveredWord.case} />
+                </div>
+                <div>
+                  <span className="text-gray-500">State:</span>{" "}
+                  <span className="arabic-text">{hoveredWord.grammaticalState}</span>
+                </div>
               </div>
             </div>
           </motion.div>

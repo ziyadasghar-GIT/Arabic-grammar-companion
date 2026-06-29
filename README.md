@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Arabic Grammar Companion — النحو التفاعلي
+
+Interactive Arabic grammar learning site for intermediate students, based on two classical texts:
+
+- **Nahw Mir** (نحو مير) — foundational definitions and rules
+- **Al-Kafiyah** (الكافية) by Ibn al-Hajib — intermediate nuances and exceptions
+
+## Features
+
+### Curriculum Modules
+1. **The Word (الكلمة)** — Noun, verb, and particle definitions
+2. **Sentence Structures (الجمل)** — Nominal and verbal sentences, compound types
+3. **Inflection (الإعراب)** — Nominative, accusative, and genitive case systems
+4. **Governing Particles (العوامل)** — Prepositions, verb-like particles, negatives
+5. **Verb Inflection (إعراب الفعل)** — Present tense: nominative, subjunctive, jussive
+6. **Followers (التوابع)** — Adjectives, emphasis, substitution, conjunction
+
+### Interactive Features
+- **Parsing Game** — Tap a governing particle (إنَّ, لنْ, لمْ, etc.) and watch the word ending change in real-time with Framer Motion animations
+- **Hover Practice** — Hover over Arabic words to see root, classification, and grammatical state in color-coded tooltips
+
+### Color-Coded Grammar Tagging
+- 🔵 **Blue** — Nominative (مرفوع)
+- 🔴 **Red** — Accusative (منصوب)
+- 🟢 **Green** — Genitive (مجرور)
+- ⚪ **Gray** — Invariable (مبني)
+
+## Tech Stack
+
+- **Next.js 16** (App Router) with static export
+- **React** + **TypeScript**
+- **Tailwind CSS** for styling
+- **Framer Motion** for animations
+- **Lucide React** for icons
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev    # Development server
+npm run build  # Static export to ./out
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Deployment
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The site is configured for static export (`output: 'export'` in `next.config.mjs`).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### GitHub Pages Setup
+1. Copy `docs/deploy-workflow.yml` to `.github/workflows/deploy.yml` (requires a token with `workflow` scope, or do it through the GitHub UI)
+2. Go to **Settings → Pages** and set **Source** to **GitHub Actions**
+3. Push to `main` — the workflow will build and deploy automatically
 
-## Learn More
+## Design
 
-To learn more about Next.js, take a look at the following resources:
+Manuscript-inspired color palette:
+- Deep navy `#1a2744` (primary)
+- Rich gold `#c9a96e` (accents)
+- Parchment off-white `#f5ecd9` (background)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Arabic text uses the [Scheherazade New](https://fonts.google.com/specimen/Scheherazade+New) and [Amiri](https://fonts.google.com/specimen/Amiri) font families.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Sources
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+All Arabic examples are extracted directly from the source texts and attributed withBadges:
+- `Nahw Mir` badge for foundational definitions
+- `Al-Kafiyah` badge for intermediate nuances

@@ -1,26 +1,87 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --manuscript-navy: #1a2744;
+  --manuscript-deep: #0f1828;
+  --manuscript-gold: #c9a96e;
+  --manuscript-gold-light: #e0c896;
+  --manuscript-parchment: #f5ecd9;
+  --manuscript-parchment-dark: #ebe0c8;
+  --manuscript-ink: #2a2a2a;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+html,
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--manuscript-parchment);
+  color: var(--manuscript-ink);
+  font-family: 'Scheherazade New', 'Amiri', 'Noto Naskh Arabic', serif;
+}
+
+/* Arabic font for Arabic text */
+.arabic-text,
+[lang="ar"],
+[dir="rtl"] {
+  font-family: 'Scheherazade New', 'Amiri', 'Noto Naskh Arabic', 'Traditional Arabic', serif;
+  direction: rtl;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--manuscript-parchment-dark);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--manuscript-gold);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--manuscript-gold-light);
+}
+
+/* Case color coding */
+.case-marfu {
+  color: #2563eb;
+}
+.case-mansub {
+  color: #dc2626;
+}
+.case-majrur {
+  color: #16a34a;
+}
+.case-mabni {
+  color: #6b7280;
+}
+
+.bg-marfu {
+  background-color: #dbeafe;
+  border-color: #2563eb;
+}
+.bg-mansub {
+  background-color: #fee2e2;
+  border-color: #dc2626;
+}
+.bg-majrur {
+  background-color: #dcfce7;
+  border-color: #16a34a;
+}
+.bg-mabni {
+  background-color: #f3f4f6;
+  border-color: #6b7280;
+}
+
+/* Manuscript texture effect */
+.manuscript-bg {
+  background-color: var(--manuscript-parchment);
+  background-image: 
+    radial-gradient(circle at 20% 80%, rgba(201, 169, 110, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(26, 39, 68, 0.03) 0%, transparent 50%);
+}
+
+/* Tooltip */
+.tooltip-content {
+  max-width: 280px;
 }

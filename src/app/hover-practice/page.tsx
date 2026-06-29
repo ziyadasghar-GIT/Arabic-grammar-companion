@@ -9,120 +9,96 @@ import { tooltipSentences, type TooltipWord } from "@/data/parsing-game";
 import type { Case } from "@/data/curriculum";
 
 const caseClassMap: Record<Case, string> = {
-  "مرفوع": "text-blue-600",
-  "منصوب": "text-red-600",
-  "مجرور": "text-green-600",
-  "مبني": "text-gray-500",
-};
-
-const caseBgMap: Record<Case, string> = {
-  "مرفوع": "bg-blue-50 border-blue-200",
-  "منصوب": "bg-red-50 border-red-200",
-  "مجرور": "bg-green-50 border-green-200",
-  "مبني": "bg-gray-50 border-gray-200",
+  "مرفوع": "text-blue-700",
+  "منصوب": "text-red-700",
+  "مجرور": "text-green-700",
+  "مبني": "text-gray-600",
 };
 
 export default function HoverPracticePage() {
   const [hoveredWord, setHoveredWord] = useState<TooltipWord | null>(null);
-  const [hoverPosition, setHoverPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [hoverPosition, setHoverPosition] = useState({ x: 0, y: 0 });
 
   const handleMouseEnter = (word: TooltipWord, e: React.MouseEvent) => {
     setHoveredWord(word);
     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-    setHoverPosition({ x: rect.left + rect.width / 2, y: rect.bottom + 8 });
+    setHoverPosition({ x: rect.left + rect.width / 2, y: rect.bottom + 10 });
   };
 
   return (
     <Layout>
-      <Link href="/" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-[#c9a96e] mb-4 transition-colors">
+      <Link href="/" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-[#c9a96e] mb-4">
         <ArrowLeft size={16} /> Dashboard
       </Link>
 
       <div className="mb-6">
-        <div className="flex items-center gap-2 mb-2">
-          <MousePointerClick className="text-[#c9a96e]" size={28} />
-          <h1 className="text-2xl font-bold text-[#1a2744]">Hover Practice — التمرين التفاعلي</h1>
+        <div className="flex items-center gap-3 mb-1.5">
+          <div className="p-2 bg-[#1a2744] rounded-lg text-[#c9a96e]">
+            <MousePointerClick size={24} />
+          </div>
+          <div>
+            <h1 className="text-2xl font-semibold text-[#1a2744]">Hover Practice</h1>
+            <p className="arabic-text text-[#c9a96e] text-xl" dir="rtl">التمرين التفاعلي</p>
+          </div>
         </div>
-        <p className="text-sm text-gray-600 flex items-center gap-1.5">
-          <Info size={14} />
-          Hover over any word to see its root, classification, and grammatical state.
+        <p className="text-sm text-[#4a4a4a] flex items-center gap-2">
+          <Info size={15} /> Hover over any word to reveal its root, classification and grammatical state.
         </p>
       </div>
 
       {/* Legend */}
-      <div className="flex flex-wrap gap-4 mb-6 text-xs">
-        {(Object.keys(caseClassMap) as Case[]).map((c) => (
-          <span key={c} className={`arabic-text px-2 py-1 rounded border ${caseBgMap[c]} ${caseClassMap[c]}`} dir="rtl">
+      <div className="flex flex-wrap gap-2 mb-6">
+        {Object.entries(caseClassMap).map(([c, cls]) => (
+          <span key={c} className={`arabic-text px-3 py-1 text-sm rounded-full border bg-white ${cls}`} dir="rtl">
             {c}
           </span>
         ))}
       </div>
 
       {/* Sentences */}
-      <div className="space-y-6">
+      <div className="space-y-5">
         {tooltipSentences.map((sent, si) => (
-          <motion.div
-            key={sent.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: si * 0.1 }}
-            className="bg-white/70 rounded-xl border border-[#c9a96e]/30 p-8"
-          >
+          <div key={sent.id} className="card rounded-2xl p-8">
             <div className="text-center">
-              <p className="arabic-text text-4xl leading-loose" dir="rtl">
+              <p className="arabic-text text-3xl lg:text-4xl leading-[1.9] tracking-wide" dir="rtl">
                 {sent.words.map((word, wi) => (
-                  <span key={wi} className="inline-block relative">
+                  <span key={wi} className="inline-block">
                     <span
                       onMouseEnter={(e) => handleMouseEnter(word, e)}
                       onMouseLeave={() => setHoveredWord(null)}
-                      className={`cursor-help arabic-text ${caseClassMap[word.case]} hover:underline decoration-dotted transition-all`}
-                      style={{ padding: "0 4px" }}
+                      className={`cursor-help transition-all hover:underline decoration-dotted ${caseClassMap[word.case]}`}
                     >
                       {word.arabic}
                     </span>
-                    {wi < sent.words.length - 1 && <span>&nbsp;</span>}
+                    {wi < sent.words.length - 1 && " "}
                   </span>
                 ))}
               </p>
             </div>
-          </motion.div>
+          </div>
         ))}
       </div>
 
-      {/* Floating tooltip */}
+      {/* Tooltip */}
       <AnimatePresence>
         {hoveredWord && (
           <motion.div
-            initial={{ opacity: 0, y: -10 }}
+            initial={{ opacity: 0, y: -6 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.15 }}
-            className="fixed pointer-events-none z-50 tooltip-content"
+            exit={{ opacity: 0, y: -6 }}
+            className="fixed z-50 pointer-events-none"
             style={{
               left: hoverPosition.x,
               top: hoverPosition.y,
               transform: "translateX(-50%)",
             }}
           >
-            <div className={`rounded-lg border-2 shadow-xl p-4 ${caseBgMap[hoveredWord.case]}`}>
-              <p className="arabic-text text-2xl font-bold mb-2" dir="rtl">{hoveredWord.arabic}</p>
+            <div className="bg-white border border-[#c9a96e]/30 shadow-xl rounded-2xl p-4 min-w-[240px]">
+              <div className="arabic-text text-2xl font-semibold mb-2 text-[#1a2744]" dir="rtl">{hoveredWord.arabic}</div>
               <div className="space-y-1 text-sm">
-                <p>
-                  <span className="font-semibold text-gray-600">Root:</span>{" "}
-                  <span className="arabic-text text-[#1a2744]" dir="rtl">{hoveredWord.root}</span>
-                </p>
-                <p>
-                  <span className="font-semibold text-gray-600">Classification:</span>{" "}
-                  <span className="arabic-text text-[#1a2744]" dir="rtl">{hoveredWord.classification}</span>
-                </p>
-                <p>
-                  <span className="font-semibold text-gray-600">Grammatical State:</span>{" "}
-                  <span className="arabic-text text-[#1a2744]" dir="rtl">{hoveredWord.grammaticalState}</span>
-                </p>
-                <p className="pt-1 flex items-center gap-1.5">
-                  <span className={`w-3 h-3 rounded-full ${hoveredWord.case === "مرفوع" ? "bg-blue-500" : hoveredWord.case === "منصوب" ? "bg-red-500" : hoveredWord.case === "مجرور" ? "bg-green-500" : "bg-gray-500"}`} />
-                  <span className="arabic-text font-semibold" dir="rtl">{hoveredWord.case}</span>
-                </p>
+                <div><span className="text-gray-500">Root:</span> <span className="arabic-text font-medium">{hoveredWord.root}</span></div>
+                <div><span className="text-gray-500">Classification:</span> <span className="arabic-text">{hoveredWord.classification}</span></div>
+                <div><span className="text-gray-500">Grammatical state:</span> <span className="arabic-text font-semibold">{hoveredWord.grammaticalState}</span></div>
               </div>
             </div>
           </motion.div>

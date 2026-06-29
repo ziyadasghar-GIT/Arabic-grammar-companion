@@ -21,7 +21,6 @@ export default function GamePage() {
       setShowResult(true);
       setCorrectCount((c) => c + 1);
     } else {
-      // still show what happens but it's not the "matching" particle
       setApplied(true);
       setShowResult(true);
     }
@@ -33,7 +32,6 @@ export default function GamePage() {
       setApplied(false);
       setShowResult(false);
     } else {
-      // restart
       setCurrentIndex(0);
       setApplied(false);
       setShowResult(false);
@@ -48,137 +46,95 @@ export default function GamePage() {
     setCorrectCount(0);
   };
 
-  const isCorrect = applied && sentence.particle;
-
   return (
     <Layout>
-      <Link href="/" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-[#c9a96e] mb-4 transition-colors">
+      <Link href="/" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-[#c9a96e] mb-4">
         <ArrowLeft size={16} /> Dashboard
       </Link>
 
       <div className="mb-6">
-        <div className="flex items-center gap-2 mb-2">
-          <GamepadIcon className="text-[#c9a96e]" size={28} />
-          <h1 className="text-2xl font-bold text-[#1a2744]">Parsing Game — لعبة الإعراب</h1>
+        <div className="flex items-center gap-3 mb-2">
+          <div className="p-2 bg-[#1a2744] rounded-lg text-[#c9a96e]"><GamepadIcon size={24} /></div>
+          <div>
+            <h1 className="text-2xl font-semibold text-[#1a2744]">Parsing Game</h1>
+            <p className="arabic-text text-[#c9a96e] text-xl" dir="rtl">لعبة الإعراب</p>
+          </div>
         </div>
-        <p className="text-sm text-gray-600">
-          Drag or tap a governing particle to apply it and watch the ending change.
-          Progress: {correctCount} / {gameSentences.length}
-        </p>
+        <p className="text-sm text-[#4a4a4a]">Tap a governing particle to apply it and watch the ending change. Progress: {correctCount} / {gameSentences.length}</p>
       </div>
 
-      {/* Progress bar */}
-      <div className="bg-[#c9a96e]/20 rounded-full h-2 mb-6 overflow-hidden">
-        <motion.div
-          className="bg-[#c9a96e] h-full rounded-full"
-          animate={{ width: `${((currentIndex + 1) / gameSentences.length) * 100}%` }}
-          transition={{ duration: 0.3 }}
-        />
+      {/* Progress */}
+      <div className="bg-[#c9a96e]/15 rounded-full h-1.5 mb-6 overflow-hidden">
+        <motion.div className="bg-[#c9a96e] h-1.5 rounded-full" animate={{ width: `${((currentIndex + 1) / gameSentences.length) * 100}%` }} />
       </div>
 
-      {/* Particle tray */}
+      {/* Particles */}
       <div className="mb-6">
-        <p className="text-sm font-semibold text-[#1a2744] mb-3">Tap a particle to apply:</p>
-        <div className="flex flex-wrap gap-3">
+        <p className="text-xs tracking-widest font-semibold text-[#c9a96e] mb-2 px-1">GOVERNING PARTICLES</p>
+        <div className="flex flex-wrap gap-2">
           {gameParticles.map((p) => (
-            <motion.button
+            <button
               key={p.latin}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              disabled={applied}
               onClick={() => handleApply(p.arabic)}
-              className={`px-4 py-3 rounded-lg border-2 font-bold transition-all arabic-text text-xl disabled:opacity-50 ${
+              disabled={applied}
+              className={`px-4 py-2.5 rounded-xl border text-lg arabic-text transition-all disabled:opacity-40 ${
                 applied && p.arabic === sentence.particle
-                  ? "bg-green-100 border-green-500 text-green-800"
+                  ? "bg-green-100 border-green-400 text-green-900"
                   : applied
                   ? "bg-white border-gray-200 text-gray-400"
-                  : "bg-white border-[#c9a96e]/40 text-[#1a2744] hover:border-[#c9a96e] hover:bg-[#f5ecd9]"
+                  : "bg-white border-[#c9a96e]/40 hover:border-[#c9a96e] text-[#1a2744]"
               }`}
               dir="rtl"
             >
               {p.arabic}
-            </motion.button>
+            </button>
           ))}
         </div>
       </div>
 
-      {/* Sentence display */}
-      <div className="bg-white/70 rounded-xl border border-[#c9a96e]/30 p-8 mb-4">
+      {/* Sentence area */}
+      <div className="card rounded-2xl p-8 mb-5 min-h-[180px] flex items-center justify-center">
         <AnimatePresence mode="wait">
           {!applied ? (
-            <motion.div
-              key="base"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0, y: -20 }}
-              className="text-center"
-            >
-              <p className="text-sm text-gray-500 mb-4">Base sentence:</p>
-              <p className="arabic-text text-5xl text-[#1a2744] leading-loose" dir="rtl">
+            <div key="base" className="text-center w-full">
+              <div className="text-xs uppercase tracking-widest text-[#c9a96e]/70 mb-2">BASE FORM</div>
+              <p className="arabic-text text-4xl lg:text-5xl leading-loose text-[#1a2744]" dir="rtl">
                 {sentence.baseSentence}
               </p>
-              <div className="mt-4 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-800 text-sm">
-                <span className="arabic-text" dir="rtl">{sentence.baseCase}</span>
-                <span>· ending: {sentence.baseEnding}</span>
+              <div className="mt-4 inline-block text-sm bg-blue-100 text-blue-800 px-3 py-0.5 rounded-full">
+                {sentence.baseCase} · ending {sentence.baseEnding}
               </div>
-            </motion.div>
+            </div>
           ) : (
-            <motion.div
-              key="result"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.4 }}
-              className="text-center"
-            >
-              <p className="text-sm text-gray-500 mb-4">After applying the particle:</p>
-              <motion.p
-                className="arabic-text text-5xl leading-loose"
-                dir="rtl"
-                initial={{ scale: 0.9 }}
-                animate={{ scale: 1 }}
-                transition={{ type: "spring", stiffness: 200 }}
-              >
-                <span className="text-[#c9a96e]">{sentence.resultSentence.split(" ")[0]}</span>{" "}
-                {sentence.resultSentence.split(" ").slice(1).join(" ")}
-              </motion.p>
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.3 }}
-                className="mt-4 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-100 text-red-800 text-sm"
-              >
-                <span className="arabic-text" dir="rtl">{sentence.resultCase}</span>
-                <span>· ending: {sentence.resultEnding}</span>
-              </motion.div>
-            </motion.div>
+            <div key="result" className="text-center w-full">
+              <div className="text-xs uppercase tracking-widest text-[#c9a96e]/70 mb-2">AFTER PARTICLE</div>
+              <p className="arabic-text text-4xl lg:text-5xl leading-loose text-[#1a2744]" dir="rtl">
+                {sentence.resultSentence}
+              </p>
+              <div className="mt-4 inline-block text-sm bg-red-100 text-red-800 px-3 py-0.5 rounded-full">
+                {sentence.resultCase} · ending {sentence.resultEnding}
+              </div>
+            </div>
           )}
         </AnimatePresence>
       </div>
 
-      {/* Result explanation */}
       <AnimatePresence>
         {showResult && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="overflow-hidden"
-          >
-            <div className="bg-[#1a2744] rounded-xl p-5 text-[#f5ecd9] mb-4">
-              <div className="flex items-start gap-3">
-                <CheckCircle2 className="text-[#c9a96e] flex-shrink-0 mt-1" size={24} />
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
+            <div className="bg-[#1a2744] text-[#f5ecd9] rounded-2xl p-5">
+              <div className="flex gap-3">
+                <CheckCircle2 className="text-[#c9a96e] mt-0.5 flex-shrink-0" size={22} />
                 <div>
-                  <p className="text-sm font-semibold text-[#c9a96e] mb-2">Why did the ending change?</p>
-                  <p className="arabic-text text-base leading-relaxed" dir="rtl">
-                    {sentence.resultExplanation}
-                  </p>
+                  <div className="text-[#c9a96e] text-sm font-semibold mb-1">Why did the ending change?</div>
+                  <p className="arabic-text text-base leading-relaxed" dir="rtl">{sentence.resultExplanation}</p>
                 </div>
               </div>
             </div>
+
             <button
               onClick={handleNext}
-              className="w-full py-3 bg-[#c9a96e] text-[#1a2744] font-bold rounded-lg hover:bg-[#e0c896] transition-colors"
+              className="w-full py-3 rounded-2xl bg-[#c9a96e] text-[#1a2744] font-semibold hover:bg-[#e0c896] active:bg-[#c9a96e] transition-colors"
             >
               {currentIndex < gameSentences.length - 1 ? "Next sentence →" : "Restart ↻"}
             </button>
@@ -186,11 +142,8 @@ export default function GamePage() {
         )}
       </AnimatePresence>
 
-      <button
-        onClick={handleReset}
-        className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-red-500 mt-4 transition-colors"
-      >
-        <RotateCcw size={14} /> Reset game
+      <button onClick={handleReset} className="mt-5 text-sm flex items-center gap-1.5 text-gray-500 hover:text-red-600">
+        <RotateCcw size={15} /> Reset game
       </button>
     </Layout>
   );

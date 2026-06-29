@@ -11,13 +11,14 @@ export default function ModuleContent({ module }: { module: Module }) {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-2xl p-6 bg-[#1a2744] text-[#f5ecd9]">
-        <div className="flex items-center gap-3 mb-1.5">
-          <BookOpen className="text-[#c9a96e]" size={26} />
-          <h1 className="text-2xl font-semibold">{module.title}</h1>
+      {/* Module header - cleaner */}
+      <div className="rounded-2xl border border-[#c9a96e]/30 bg-white p-6">
+        <div className="flex items-center gap-3 mb-1">
+          <BookOpen className="text-[#c9a96e]" size={24} />
+          <h1 className="text-2xl font-semibold text-[#1a2744]">{module.title}</h1>
         </div>
-        <p className="arabic-text text-xl text-[#c9a96e] mb-2" dir="rtl">{module.titleArabic}</p>
-        <p className="text-sm text-[#f5ecd9]/75 max-w-3xl">{module.description}</p>
+        <p className="arabic-text text-2xl text-[#c9a96e] mt-0.5" dir="rtl">{module.titleArabic}</p>
+        <p className="mt-3 text-sm text-[#3f3f3f] max-w-3xl">{module.description}</p>
       </div>
 
       <div className="space-y-4">
@@ -48,9 +49,9 @@ function SubTopicCard({
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.05 }}
+      transition={{ delay: index * 0.04 }}
       className="card rounded-2xl overflow-hidden"
     >
       <button
@@ -59,7 +60,7 @@ function SubTopicCard({
       >
         <div>
           <h3 className="text-lg font-semibold text-[#1a2744]">{topic.title}</h3>
-          <p className="arabic-text text-[#c9a96e] text-[15px] mt-0.5" dir="rtl">{topic.titleArabic}</p>
+          <p className="arabic-text text-[#c9a96e] text-base mt-0.5" dir="rtl">{topic.titleArabic}</p>
         </div>
         <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.2 }}>
           <ChevronDown className="text-[#1a2744]/70" size={22} />
@@ -75,10 +76,10 @@ function SubTopicCard({
             transition={{ duration: 0.25 }}
             className="overflow-hidden"
           >
-            <div className="px-5 pb-6 space-y-4 border-t border-[#c9a96e]/15">
+            <div className="px-5 pb-6 space-y-4 border-t border-[#c9a96e]/20">
               <div className="pt-4">
-                <div className="bg-[#f5ecd9]/70 rounded-xl p-4 border border-[#c9a96e]/20">
-                  <p className="arabic-text text-lg leading-relaxed text-[#1a2744]" dir="rtl">
+                <div className="bg-[#f5ecd9]/60 rounded-xl p-4 border border-[#c9a96e]/20">
+                  <p className="arabic-text text-[15px] leading-relaxed text-[#1a2744]" dir="rtl">
                     {topic.definition}
                   </p>
                 </div>
@@ -86,9 +87,9 @@ function SubTopicCard({
 
               {topic.nuances && (
                 <div className="bg-amber-50/70 rounded-xl p-4 border border-amber-200/60">
-                  <div className="flex items-center gap-2 mb-2">
+                  <div className="flex items-center gap-2 mb-1.5">
                     <Sparkles className="text-amber-600" size={15} />
-                    <span className="text-[10px] font-semibold tracking-[1px] text-amber-700 uppercase">From Al-Kafiyah</span>
+                    <span className="text-[10px] font-semibold tracking-[1px] text-amber-700 uppercase">Al-Kafiyah Nuance</span>
                   </div>
                   <p className="arabic-text text-[15px] leading-relaxed text-amber-950" dir="rtl">
                     {topic.nuances}

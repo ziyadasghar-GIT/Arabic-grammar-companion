@@ -7,25 +7,25 @@ const caseConfig: Record<
   "مرفوع": {
     label: "Nominative",
     arabic: "مرفوع",
-    classes: "bg-blue-50 text-blue-800 border-blue-300",
+    classes: "bg-blue-100 text-blue-900 border-blue-400",
     dotClass: "bg-blue-600",
   },
   "منصوب": {
     label: "Accusative",
     arabic: "منصوب",
-    classes: "bg-red-50 text-red-800 border-red-300",
+    classes: "bg-red-100 text-red-900 border-red-400",
     dotClass: "bg-red-600",
   },
   "مجرور": {
     label: "Genitive",
     arabic: "مجرور",
-    classes: "bg-green-50 text-green-800 border-green-300",
+    classes: "bg-emerald-100 text-emerald-900 border-emerald-400",
     dotClass: "bg-green-600",
   },
   "مبني": {
     label: "Invariable",
     arabic: "مبني",
-    classes: "bg-gray-50 text-gray-700 border-gray-300",
+    classes: "bg-slate-100 text-slate-800 border-slate-400",
     dotClass: "bg-gray-600",
   },
 };
